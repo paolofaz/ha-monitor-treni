@@ -464,7 +464,7 @@ class MonitorTreniCard extends HTMLElement {
         ${
           watchActive
             ? `<div class="watch-badge">
-                🔔 avviso ogni ${escapeHtml(attrs.AvvisoRitardoPasso)} min
+                🔔 avviso ogni ${escapeHtml(attrs.AvvisoRitardoPasso)} min di ritardo
                 ${attrs.AvvisoRitardoSogliaAttuale > 0 ? `(soglia superata)` : ""}
               </div>`
             : ""
