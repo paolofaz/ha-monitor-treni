@@ -236,13 +236,13 @@ class MonitorTreniManager:
             message = watch["message"]
         elif new_level > old_level:
             message = (
-                f"Il treno {coordinator.train_number} ha superato i "
-                f"{new_level * step} minuti di ritardo (ora {delay} min)"
+                f"Il treno {coordinator.train_number} ha accumulato "
+                f"{delay} minuti di ritardo"
             )
         else:
             message = (
-                f"Il treno {coordinator.train_number} è sceso sotto i "
-                f"{old_level * step} minuti di ritardo (ora {delay} min)"
+                f"Il treno {coordinator.train_number} è sceso a "
+                f"{delay} minuti di ritardo"
             )
 
         _LOGGER.info(
