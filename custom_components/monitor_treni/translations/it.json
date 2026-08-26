@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configura Monitor Treni",
+        "description": "Viene creato un unico hub. I treni da monitorare si aggiungono e rimuovono dalla card di Lovelace, non da qui.",
+        "data": {
+          "scan_interval": "Intervallo di aggiornamento (minuti)",
+          "auto_remove_hours": "Rimozione automatica dopo l'arrivo (ore, 25 = mai)"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Monitor Treni è già configurato."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni Monitor Treni",
+        "data": {
+          "scan_interval": "Intervallo di aggiornamento (minuti)",
+          "auto_remove_hours": "Rimozione automatica dopo l'arrivo (ore, 25 = mai)"
+        }
+      }
+    }
+  },
+  "services": {
+    "add_train": {
+      "name": "Aggiungi treno",
+      "description": "Aggiunge un treno da monitorare.",
+      "fields": {
+        "train_number": {
+          "name": "Numero treno",
+          "description": "Il numero del treno, es. 2028."
+        },
+        "date": {
+          "name": "Data",
+          "description": "Data di circolazione (giorno di partenza). Se omessa viene usata la data odierna."
+        }
+      }
+    },
+    "remove_train": {
+      "name": "Rimuovi treno",
+      "description": "Rimuove un treno monitorato.",
+      "fields": {
+        "train_number": {
+          "name": "Numero treno",
+          "description": "Il numero del treno da rimuovere."
+        },
+        "date": {
+          "name": "Data",
+          "description": "Data di circolazione del treno da rimuovere."
+        }
+      }
+    },
+    "notify_on_delay": {
+      "name": "Avvisami se il treno è in ritardo",
+      "description": "Attiva un avviso per tutta la durata del viaggio: il valore indicato viene usato come passo ricorrente (es. 15 minuti: avviso a 15, 30, 45, 60...), sia salendo che scendendo, finché il treno non risulta arrivato o l'avviso non viene annullato. Aggiunge il treno automaticamente se non è già monitorato.",
+      "fields": {
+        "train_number": {
+          "name": "Numero treno",
+          "description": "Il numero del treno da controllare."
+        },
+        "date": {
+          "name": "Data",
+          "description": "Data di circolazione (giorno di partenza). Se omessa viene usata la data odierna."
+        },
+        "threshold_minutes": {
+          "name": "Passo (minuti)",
+          "description": "Ogni quanti minuti di ritardo ricevere un avviso."
+        },
+        "notify_target": {
+          "name": "Destinatario notifica",
+          "description": "L'entità di notifica a cui inviare l'avviso (es. il tuo telefono)."
+        },
+        "message": {
+          "name": "Messaggio personalizzato",
+          "description": "Testo della notifica. Se omesso viene generato automaticamente."
+        }
+      }
+    },
+    "cancel_delay_watch": {
+      "name": "Annulla avviso ritardo",
+      "description": "Annulla un avviso di ritardo impostato in precedenza, se non è già scattato.",
+      "fields": {
+        "train_number": {
+          "name": "Numero treno",
+          "description": "Il numero del treno."
+        },
+        "date": {
+          "name": "Data",
+          "description": "Data di circolazione (giorno di partenza)."
+        }
+      }
+    }
+  }
+}

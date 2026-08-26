@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Monitor Treni",
+        "description": "This creates a single hub. Trains to monitor are added and removed from the Lovelace card, not from here.",
+        "data": {
+          "scan_interval": "Update interval (minutes)",
+          "auto_remove_hours": "Auto-remove after arrival (hours, 25 = never)"
+        }
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Monitor Treni is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Monitor Treni options",
+        "data": {
+          "scan_interval": "Update interval (minutes)",
+          "auto_remove_hours": "Auto-remove after arrival (hours, 25 = never)"
+        }
+      }
+    }
+  },
+  "services": {
+    "add_train": {
+      "name": "Add train",
+      "description": "Adds a train to monitor.",
+      "fields": {
+        "train_number": {
+          "name": "Train number",
+          "description": "The train number, e.g. 2028."
+        },
+        "date": {
+          "name": "Date",
+          "description": "Service date (departure day). Defaults to today if omitted."
+        }
+      }
+    },
+    "remove_train": {
+      "name": "Remove train",
+      "description": "Removes a monitored train.",
+      "fields": {
+        "train_number": {
+          "name": "Train number",
+          "description": "The train number to remove."
+        },
+        "date": {
+          "name": "Date",
+          "description": "Service date of the train to remove."
+        }
+      }
+    },
+    "notify_on_delay": {
+      "name": "Notify me if the train is delayed",
+      "description": "Enables a watch for the whole trip: the value given is used as a recurring step (e.g. 15 minutes: alert at 15, 30, 45, 60...), both rising and falling, until the train arrives or the watch is cancelled. Adds the train automatically if not already monitored.",
+      "fields": {
+        "train_number": {
+          "name": "Train number",
+          "description": "The train number to watch."
+        },
+        "date": {
+          "name": "Date",
+          "description": "Service date (departure day). Defaults to today if omitted."
+        },
+        "threshold_minutes": {
+          "name": "Step (minutes)",
+          "description": "How many minutes of delay between each alert."
+        },
+        "notify_target": {
+          "name": "Notify target",
+          "description": "The notify entity to send the alert to (e.g. your phone)."
+        },
+        "message": {
+          "name": "Custom message",
+          "description": "Notification text. Auto-generated if omitted."
+        }
+      }
+    },
+    "cancel_delay_watch": {
+      "name": "Cancel delay watch",
+      "description": "Cancels a previously set delay watch, if it hasn't fired yet.",
+      "fields": {
+        "train_number": {
+          "name": "Train number",
+          "description": "The train number."
+        },
+        "date": {
+          "name": "Date",
+          "description": "Service date (departure day)."
+        }
+      }
+    }
+  }
+}

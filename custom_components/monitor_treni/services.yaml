@@ -1,0 +1,106 @@
+add_train:
+  name: Aggiungi treno
+  description: Aggiunge un treno da monitorare, creando il relativo sensore.
+  fields:
+    train_number:
+      name: Numero treno
+      description: Numero del treno da monitorare (es. 2028).
+      required: true
+      example: "2028"
+      selector:
+        text:
+    date:
+      name: Data
+      description: Data di circolazione, ovvero il giorno di partenza. Se omessa viene usata la data odierna.
+      required: false
+      selector:
+        date:
+
+remove_train:
+  name: Rimuovi treno
+  description: Rimuove un treno monitorato e il relativo sensore.
+  fields:
+    train_number:
+      name: Numero treno
+      description: Numero del treno da rimuovere.
+      required: true
+      example: "2028"
+      selector:
+        text:
+    date:
+      name: Data
+      description: Data di circolazione (giorno di partenza) del treno da rimuovere.
+      required: true
+      selector:
+        date:
+
+notify_on_delay:
+  name: Avvisami se il treno è in ritardo
+  description: >-
+    Attiva un avviso per tutta la durata del viaggio: il valore indicato
+    viene usato come passo ricorrente, non come soglia singola. Notifica
+    ogni volta che il ritardo attraversa un multiplo di quel valore (es.
+    con 15 minuti: avviso a 15, 30, 45, 60...), sia salendo che scendendo,
+    finché il treno non risulta arrivato o l'avviso non viene annullato.
+    Se il treno non è ancora monitorato viene aggiunto automaticamente.
+  fields:
+    train_number:
+      name: Numero treno
+      description: Numero del treno da controllare.
+      required: true
+      example: "2028"
+      selector:
+        text:
+    date:
+      name: Data
+      description: Data di circolazione (giorno di partenza). Se omessa viene usata la data odierna.
+      required: false
+      selector:
+        date:
+    threshold_minutes:
+      name: Passo (minuti)
+      description: >-
+        Ogni quanti minuti di ritardo ricevere un avviso (es. 15 = avviso
+        a 15, 30, 45, 60 minuti di ritardo, e di nuovo quando rientra
+        sotto ciascuna soglia).
+      required: true
+      example: 10
+      selector:
+        number:
+          min: 1
+          max: 180
+          mode: box
+          unit_of_measurement: min
+    notify_target:
+      name: Destinatario notifica
+      description: >-
+        L'entità di notifica a cui inviare l'avviso (es. il tuo telefono).
+      required: true
+      example: notify.mobile_app_iphone_di_paolo
+      selector:
+        entity:
+          domain: notify
+    message:
+      name: Messaggio personalizzato
+      description: Testo della notifica. Se omesso viene generato automaticamente.
+      required: false
+      selector:
+        text:
+
+cancel_delay_watch:
+  name: Annulla avviso ritardo
+  description: Annulla un avviso di ritardo impostato in precedenza (se non è già scattato).
+  fields:
+    train_number:
+      name: Numero treno
+      description: Numero del treno.
+      required: true
+      example: "2028"
+      selector:
+        text:
+    date:
+      name: Data
+      description: Data di circolazione (giorno di partenza).
+      required: true
+      selector:
+        date:
