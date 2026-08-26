@@ -201,7 +201,7 @@ async def _async_register_frontend(hass: HomeAssistant) -> None:
 
     www_path = hass.config.path("custom_components", DOMAIN, "www")
     url_base = "/monitor_treni_files"
-    js_url = f"{url_base}/monitor-treni-card.js?v=5"
+    js_url = f"{url_base}/monitor-treni-card.js?v=6"
 
     try:
         from homeassistant.components.http import StaticPathConfig
