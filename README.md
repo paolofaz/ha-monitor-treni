@@ -182,15 +182,6 @@ giorno X e arriva alle 10:00 del giorno Y, inserisci X come data anche se
 lo stai aggiungendo dopo mezzanotte del giorno Y — altrimenti la ricerca
 del treno fallisce.
 
-## Pulizia manuale di residui in .storage
-
-Dalla 1.0.0, eliminare l'integrazione dall'interfaccia ripulisce anche
-automaticamente il suo file di storage dei treni. Se stai migrando da
-un'installazione precedente con un dominio diverso (es. versioni di prova
-con altro nome), i vecchi file `<vecchio_dominio>_trains_<id>` in
-`config/.storage/` restano come residui orfani: fermando Home Assistant
-puoi cancellarli in sicurezza (controlla `config/.storage/core.config_entries`
-per essere sicuro di quale sia l'id dell'entry attualmente attiva).
 
 ## Licenza
 
