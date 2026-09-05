@@ -681,9 +681,6 @@ class MonitorTreniCard extends HTMLElement {
         color: var(--secondary-text-color);
         gap: 8px;
       }
-      .next-stop {
-        text-align: right;
-      }
       .times-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
