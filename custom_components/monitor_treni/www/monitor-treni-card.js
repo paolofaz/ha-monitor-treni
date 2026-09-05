@@ -489,7 +489,9 @@ class MonitorTreniCard extends HTMLElement {
                 }
                 ${
                   attrs.ProssimaFermata
-                    ? `<div class="next-stop">Prossima: ${escapeHtml(attrs.ProssimaFermata)}</div>`
+                    ? `<div>Prossima: ${escapeHtml(attrs.ProssimaFermata)}${
+                        attrs.ArrivoPrevistoProssimaFermata ? ` (${escapeHtml(timeOnly(attrs.ArrivoPrevistoProssimaFermata))})` : ""
+                      }</div>`
                     : "<div></div>"
                 }
               </div>`
