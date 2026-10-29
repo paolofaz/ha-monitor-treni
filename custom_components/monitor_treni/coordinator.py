@@ -58,7 +58,11 @@ class MonitorTreniCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self):
         async with aiohttp.ClientSession(
-            timeout=aiohttp.ClientTimeout(total=15)
+            timeout=aiohttp.ClientTimeout(total=15),
+            headers={
+                "User-Agent": "Mozilla/5.0",
+                "Accept": "text/plain, */*",
+            },
         ) as session:
             station, millis = self.identity or await self._resolve(session)
             url = f"{BASE_URL}/andamentoTreno/{station}/{self.train_number}/{millis}"
