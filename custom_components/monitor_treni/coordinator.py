@@ -1,12 +1,21 @@
+
 from datetime import timedelta
 import logging
 import aiohttp
 
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import BASE_URL
 
 _LOGGER = logging.getLogger(__name__)
+
+VIAGGIATRENO_HEADERS = {
+    "User-Agent": "Mozilla/5.0",
+    "Accept": "text/plain, */*",
+}
+
+REQUEST_TIMEOUT = aiohttp.ClientTimeout(total=15)
 
 
 class MonitorTreniCoordinator(DataUpdateCoordinator):
@@ -37,7 +46,9 @@ class MonitorTreniCoordinator(DataUpdateCoordinator):
 
     async def _resolve(self, session):
         async with session.get(
-            f"{BASE_URL}/cercaNumeroTrenoTrenoAutocomplete/{self.train_number}"
+            f"{BASE_URL}/cercaNumeroTrenoTrenoAutocomplete/{self.train_number}",
+            headers=VIAGGIATRENO_HEADERS,
+            timeout=REQUEST_TIMEOUT,
         ) as resp:
             if resp.status != 200:
                 raise UpdateFailed(f"ViaggiaTreno HTTP {resp.status}")
@@ -57,26 +68,25 @@ class MonitorTreniCoordinator(DataUpdateCoordinator):
         raise UpdateFailed(f"Treno {self.train_number} non trovato per {self.date}")
 
     async def _async_update_data(self):
-        async with aiohttp.ClientSession(
-            timeout=aiohttp.ClientTimeout(total=15),
-            headers={
-                "User-Agent": "Mozilla/5.0",
-                "Accept": "text/plain, */*",
-            },
-        ) as session:
-            station, millis = self.identity or await self._resolve(session)
-            url = f"{BASE_URL}/andamentoTreno/{station}/{self.train_number}/{millis}"
-            async with session.get(url) as resp:
-                if resp.status == 204:
-                    raise UpdateFailed("ViaggiaTreno: nessun dato disponibile")
-                if resp.status != 200:
-                    raise UpdateFailed(f"ViaggiaTreno HTTP {resp.status}")
-                try:
-                    data = await resp.json(content_type=None)
-                except Exception as err:
-                    raise UpdateFailed("Risposta JSON non valida") from err
+        session = async_get_clientsession(self.hass)
+        station, millis = self.identity or await self._resolve(session)
+        url = f"{BASE_URL}/andamentoTreno/{station}/{self.train_number}/{millis}"
 
-            if not isinstance(data, dict):
-                raise UpdateFailed("Formato andamentoTreno inatteso")
-            _LOGGER.debug("Risposta ViaggiaTreno treno %s: %s", self.train_number, data)
-            return data
+        async with session.get(
+            url,
+            headers=VIAGGIATRENO_HEADERS,
+            timeout=REQUEST_TIMEOUT,
+        ) as resp:
+            if resp.status == 204:
+                raise UpdateFailed("ViaggiaTreno: nessun dato disponibile")
+            if resp.status != 200:
+                raise UpdateFailed(f"ViaggiaTreno HTTP {resp.status}")
+            try:
+                data = await resp.json(content_type=None)
+            except Exception as err:
+                raise UpdateFailed("Risposta JSON non valida") from err
+
+        if not isinstance(data, dict):
+            raise UpdateFailed("Formato andamentoTreno inatteso")
+        _LOGGER.debug("Risposta ViaggiaTreno treno %s: %s", self.train_number, data)
+        return data
