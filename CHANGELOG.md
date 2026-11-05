@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0
+## 2.0.1
 
 - Integrazione a istanza singola: si configura una volta sola, i treni si
   gestiscono a runtime dalla card Lovelace o via servizi.
