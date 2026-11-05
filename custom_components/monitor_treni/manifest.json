@@ -4,9 +4,9 @@
   "codeowners": [
     "@paolofaz"
   ],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "config_flow": true,
-  "documentation": "https://github.com/paolofaz/monitor_treni",
+  "documentation": "https://github.com/paolofaz/ha-monitor-treni",
   "dependencies": [
     "http",
     "frontend"
