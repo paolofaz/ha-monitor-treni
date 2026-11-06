@@ -8,10 +8,12 @@ API pubbliche di ViaggiaTreno (Trenitalia / RFI).
 > prudenza, questo repository è pensato per uso personale: tienilo privato
 > su GitHub e installalo solo sulla tua istanza.
 >
-> Nota pratica: **HACS non supporta i repository privati** (lo dichiara
-> esplicitamente la loro documentazione — richieste a repo privati
-> ritornano 404 anche con un token valido). Se vuoi restare privato,
-> installa manualmente (vedi sotto) invece che tramite HACS.
+> Nota pratica: **né il Marketplace integrato in Home Assistant 2026.11+
+> né HACS supportano i repository GitHub privati**. Anche collegando GitHub,
+> il Marketplace legge solo repository pubblici. Se vuoi mantenere privato
+> il codice, usa l'installazione manuale descritta sotto; non aggiungere
+> questo repository al Marketplace.
+> Riferimento ufficiale: https://www.home-assistant.io/integrations/marketplace/
 
 ## Installazione
 
@@ -22,23 +24,26 @@ API pubbliche di ViaggiaTreno (Trenitalia / RFI).
    `config/custom_components/` della tua istanza Home Assistant.
 3. Riavvia Home Assistant.
 
-### Tramite Marketplace (Home Assistant 2026.11+)
+### Tramite Marketplace (solo se il repository è pubblico)
 
-1. Apri **Impostazioni → Marketplace → Aggiungi da link**.
-2. Inserisci `https://github.com/paolofaz/ha-monitor-treni` e scegli
-   **Integrazione** se viene richiesto il tipo.
-3. Installa l'integrazione e riavvia Home Assistant se richiesto.
+Home Assistant 2026.11+ integra HACS come Marketplace. La funzione
+**Impostazioni → Marketplace → Aggiungi da link** accetta **solo repository
+GitHub pubblici**. Un repository privato può dare errori come
+`can not be reached on GitHub: Not Found` e far apparire la versione
+installata come scomparsa, anche quando il codice è ancora presente
+nell'istanza di Home Assistant. **Non occorre rendere pubblico il
+repository per utilizzare l'integrazione: installala manualmente.**
 
-Il Marketplace integrato sostituisce HACS da Home Assistant 2026.11.
-Per Home Assistant 2026.10 o versioni precedenti, usa ancora HACS:
-**Integrazioni → menu (⋮) → Repository personalizzati**, inserisci
-l'URL del repository, scegli **Integrazione** e installa.
+Se questo repository era stato registrato nel Marketplace prima di essere
+reso privato, il Marketplace può continuare a tentare gli aggiornamenti.
+La rimozione di una integrazione *installata* tramite Marketplace può
+eliminare i file da `custom_components/`: prima di procedere esegui un
+backup completo di Home Assistant e della cartella dell'integrazione.
+L'installazione manuale non viene aggiornata automaticamente dal Marketplace.
 
-> **Diagnostica**: il messaggio `<QueueManager> There is no manifest.json
-> at custom_components/None/manifest.json` viene emesso dal Marketplace
-> quando non riesce a identificare la cartella di **un** repository. Da
-> solo non identifica quale repository sia coinvolto. Prima di attribuirlo
-> a Monitor Treni, controlla i messaggi di debug adiacenti del Marketplace.
+Per Home Assistant 2026.10 o versioni precedenti, HACS prevede
+**Integrazioni → menu (⋮) → Repository personalizzati**, ma richiede
+comunque un repository pubblico.
 
 ## Configurazione
 
