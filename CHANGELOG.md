@@ -1,3 +1,5 @@
+# Changelog
+
 ## Non ancora rilasciato
 
 - Aggiunto `issue_tracker` al manifest, come richiesto dalle regole di
@@ -6,8 +8,6 @@
   il solo manifest dell'integrazione resta in `custom_components/monitor_treni/`.
 - Documentata l'installazione dal Marketplace di Home Assistant 2026.11 e
   la diagnosi degli errori generici del QueueManager.
-
-# Changelog
 
 ## 2.0.1
 
