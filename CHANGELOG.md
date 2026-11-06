@@ -1,6 +1,6 @@
 # Changelog
 
-## Non ancora rilasciato
+## 2.0.2 — 2026-11-06
 
 - Aggiunto `issue_tracker` al manifest, come richiesto dalle regole di
   pubblicazione per le integrazioni del Marketplace.
@@ -8,6 +8,10 @@
   il solo manifest dell'integrazione resta in `custom_components/monitor_treni/`.
 - Documentata l'installazione dal Marketplace di Home Assistant 2026.11 e
   la diagnosi degli errori generici del QueueManager.
+- Chiarito che i repository GitHub privati non possono essere gestiti dal
+  Marketplace: dopo averli resi nuovamente privati possono ricomparire
+  errori di accesso, senza impatto necessario sul funzionamento locale.
+- Nessuna modifica al funzionamento dei sensori, dei servizi o della card.
 
 ## 2.0.1
 

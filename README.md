@@ -45,6 +45,28 @@ Per Home Assistant 2026.10 o versioni precedenti, HACS prevede
 **Integrazioni → menu (⋮) → Repository personalizzati**, ma richiede
 comunque un repository pubblico.
 
+### Aggiornamento temporaneo con repository pubblico
+
+Per un aggiornamento occasionale tramite Marketplace:
+
+1. Verifica prima che il repository **e la cronologia dei commit** non
+   contengano credenziali o dati riservati: anche pochi minuti di
+   visibilità pubblica permettono ad altri di copiarli.
+2. Esegui un backup di Home Assistant.
+3. Cambia temporaneamente la visibilità GitHub in **Public**.
+4. Pubblica una release GitHub con tag coerente con `manifest.json`
+   (per questa versione: `v2.0.2`).
+5. Nel Marketplace aggiorna Monitor Treni, verifica la versione installata
+   e riavvia Home Assistant se richiesto.
+6. Riporta il repository in **Private**.
+
+**Attenzione:** il passaggio di nuovo a Private non è una soluzione agli
+errori del Marketplace. Quest'ultimo continuerà a tentare gli aggiornamenti
+di un repository non più accessibile e potrebbe riportare `Not Found`
+o altri messaggi. L'integrazione già installata resta sul disco e può
+continuare a funzionare; per evitare le verifiche del Marketplace occorre
+gestirla manualmente.
+
 ## Configurazione
 
 1. Impostazioni → Dispositivi e servizi → Aggiungi integrazione → cerca
