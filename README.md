@@ -22,11 +22,23 @@ API pubbliche di ViaggiaTreno (Trenitalia / RFI).
    `config/custom_components/` della tua istanza Home Assistant.
 3. Riavvia Home Assistant.
 
-### Tramite HACS (solo se il repository è pubblico)
+### Tramite Marketplace (Home Assistant 2026.11+)
 
-1. HACS → Integrazioni → menu (⋮) → Repository personalizzati.
-2. Incolla l'URL del repository, categoria "Integrazione".
-3. Installa normalmente da lì.
+1. Apri **Impostazioni → Marketplace → Aggiungi da link**.
+2. Inserisci `https://github.com/paolofaz/ha-monitor-treni` e scegli
+   **Integrazione** se viene richiesto il tipo.
+3. Installa l'integrazione e riavvia Home Assistant se richiesto.
+
+Il Marketplace integrato sostituisce HACS da Home Assistant 2026.11.
+Per Home Assistant 2026.10 o versioni precedenti, usa ancora HACS:
+**Integrazioni → menu (⋮) → Repository personalizzati**, inserisci
+l'URL del repository, scegli **Integrazione** e installa.
+
+> **Diagnostica**: il messaggio `<QueueManager> There is no manifest.json
+> at custom_components/None/manifest.json` viene emesso dal Marketplace
+> quando non riesce a identificare la cartella di **un** repository. Da
+> solo non identifica quale repository sia coinvolto. Prima di attribuirlo
+> a Monitor Treni, controlla i messaggi di debug adiacenti del Marketplace.
 
 ## Configurazione
 
