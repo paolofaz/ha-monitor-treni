@@ -1,5 +1,7 @@
 # Monitor Treni — Home Assistant
 
+[![Release](https://img.shields.io/github/v/release/paolofaz/ha-monitor-treni)](https://github.com/paolofaz/ha-monitor-treni/releases/latest)
+
 Integrazione + card Lovelace per monitorare il ritardo dei treni tramite le
 API pubbliche di ViaggiaTreno (Trenitalia / RFI).
 
@@ -54,8 +56,7 @@ Per un aggiornamento occasionale tramite Marketplace:
    visibilità pubblica permettono ad altri di copiarli.
 2. Esegui un backup di Home Assistant.
 3. Cambia temporaneamente la visibilità GitHub in **Public**.
-4. Pubblica una release GitHub con tag coerente con `manifest.json`
-   (per questa versione: `v2.0.2`).
+4. Verifica che sia pubblicata una [release GitHub](https://github.com/paolofaz/ha-monitor-treni/releases/latest) con tag coerente con `manifest.json`.
 5. Nel Marketplace aggiorna Monitor Treni, verifica la versione installata
    e riavvia Home Assistant se richiesto.
 6. Riporta il repository in **Private**.
@@ -66,6 +67,12 @@ di un repository non più accessibile e potrebbe riportare `Not Found`
 o altri messaggi. L'integrazione già installata resta sul disco e può
 continuare a funzionare; per evitare le verifiche del Marketplace occorre
 gestirla manualmente.
+
+## Novità v2.0.3
+
+- Le soglie di ritardo devono essere di almeno un minuto; le configurazioni salvate non valide vengono ignorate e rimosse all'avvio.
+- Validazione del numero del treno e utilizzo del fuso orario di Home Assistant per la data di riferimento.
+- Test automatici, Hassfest e validazione HACS prima delle future release.
 
 ## Configurazione
 
