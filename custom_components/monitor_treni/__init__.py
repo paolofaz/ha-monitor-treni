@@ -1,5 +1,4 @@
 import logging
-from datetime import date as date_cls
 
 import voluptuous as vol
 
@@ -8,6 +7,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.storage import Store
+from homeassistant.util import dt as dt_util
 
 from .const import (
     CONF_SCAN_INTERVAL,
@@ -27,28 +27,28 @@ PLATFORMS = [Platform.SENSOR]
 
 ADD_TRAIN_SCHEMA = vol.Schema(
     {
-        vol.Required("train_number"): cv.string,
+        vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
         vol.Optional("date"): cv.string,
     }
 )
 REMOVE_TRAIN_SCHEMA = vol.Schema(
     {
-        vol.Required("train_number"): cv.string,
+        vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
         vol.Required("date"): cv.string,
     }
 )
 NOTIFY_ON_DELAY_SCHEMA = vol.Schema(
     {
-        vol.Required("train_number"): cv.string,
+        vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
         vol.Optional("date"): cv.string,
-        vol.Required("threshold_minutes"): vol.Coerce(int),
+        vol.Required("threshold_minutes"): vol.All(vol.Coerce(int), vol.Range(min=1)),
         vol.Required("notify_target"): cv.string,
         vol.Optional("message"): cv.string,
     }
 )
 CANCEL_DELAY_WATCH_SCHEMA = vol.Schema(
     {
-        vol.Required("train_number"): cv.string,
+        vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
         vol.Required("date"): cv.string,
     }
 )
@@ -108,7 +108,7 @@ def _async_register_services(hass: HomeAssistant) -> None:
 
     async def _add_train(call: ServiceCall) -> None:
         train_number = str(call.data["train_number"]).strip()
-        service_date = call.data.get("date") or date_cls.today().isoformat()
+        service_date = call.data.get("date") or dt_util.now().date().isoformat()
         for manager in hass.data.get(DOMAIN, {}).values():
             await manager.async_add_train(train_number, service_date)
 
@@ -120,7 +120,7 @@ def _async_register_services(hass: HomeAssistant) -> None:
 
     async def _notify_on_delay(call: ServiceCall) -> None:
         train_number = str(call.data["train_number"]).strip()
-        service_date = call.data.get("date") or date_cls.today().isoformat()
+        service_date = call.data.get("date") or dt_util.now().date().isoformat()
         threshold = call.data["threshold_minutes"]
         notify_target = str(call.data["notify_target"]).strip()
         message = call.data.get("message")
