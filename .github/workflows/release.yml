@@ -28,8 +28,6 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # Repository topics require separate GitHub Settings permission.
-          ignore: topics
   publish:
     needs: [tests, hassfest, hacs]
     if: github.ref == 'refs/heads/main'
