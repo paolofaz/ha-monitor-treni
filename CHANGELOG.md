@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3 — 2026-11-26
+
+- Validate delay thresholds and discard invalid stored watches before evaluation.
+- Validate train numbers and use Home Assistant local dates.
+
+
 ## 2.0.2 — 2026-11-06
 
 - Aggiunto `issue_tracker` al manifest, come richiesto dalle regole di
