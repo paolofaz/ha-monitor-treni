@@ -147,6 +147,8 @@ class MonitorTreniManager:
         notify_target è l'entity_id di un'entità del dominio "notify"
         (es. "notify.mobile_app_iphone_di_paolo").
         """
+        if type(threshold_minutes) is not int or threshold_minutes < 1:
+            raise ValueError("threshold_minutes must be a positive integer")
         train_number = str(train_number).strip()
         date = str(date).strip()
         key = f"{train_number}_{date}"
@@ -276,7 +278,16 @@ class MonitorTreniManager:
                 item["train_number"], item["date"], notify=False
             )
 
-        self._delay_watches = stored.get("watches", {}) or {}
+        watches = stored.get("watches", {}) or {}
+        self._delay_watches = {
+            key: watch for key, watch in watches.items()
+            if isinstance(watch, dict)
+            and type(watch.get("threshold")) is int
+            and watch["threshold"] >= 1
+        }
+        if len(self._delay_watches) != len(watches):
+            _LOGGER.warning("Rimossi avvisi di ritardo con soglia non valida")
+            await self.async_save()
         for key in list(self._delay_watches.keys()):
             self._check_delay_watch(key)
             self._sync_coordinator_watch(key)
