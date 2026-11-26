@@ -4,16 +4,16 @@
   "codeowners": [
     "@paolofaz"
   ],
-  "version": "2.0.3",
   "config_flow": true,
-  "documentation": "https://github.com/paolofaz/ha-monitor-treni",
   "dependencies": [
     "http",
     "frontend"
   ],
+  "documentation": "https://github.com/paolofaz/ha-monitor-treni",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/paolofaz/ha-monitor-treni/issues",
   "requirements": [],
   "single_config_entry": true,
-  "issue_tracker": "https://github.com/paolofaz/ha-monitor-treni/issues"
+  "version": "2.0.3"
 }
