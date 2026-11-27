@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.4 — 2026-11-27
+
+- Validate real ISO calendar dates in all train services, preserving existing stored string keys.
+- Log storage and Lovelace failures instead of silently ignoring them.
+- Keep the established HTTP ViaggiaTreno endpoint until HTTPS support is verified.
+
 ## 2.0.3 — 2026-11-26
 
 - Validate delay thresholds and discard invalid stored watches before evaluation.
