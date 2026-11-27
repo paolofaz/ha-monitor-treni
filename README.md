@@ -68,6 +68,12 @@ o altri messaggi. L'integrazione già installata resta sul disco e può
 continuare a funzionare; per evitare le verifiche del Marketplace occorre
 gestirla manualmente.
 
+## Novità v2.0.4
+
+- Validazione rigorosa delle date dei servizi (`YYYY-MM-DD`), incluse le date di calendario non esistenti.
+- Gli errori di archiviazione e registrazione della card vengono registrati nei log.
+- L’endpoint HTTP di ViaggiaTreno resta invariato; il supporto HTTPS non è stato verificato.
+
 ## Novità v2.0.3
 
 - Le soglie di ritardo devono essere di almeno un minuto; le configurazioni salvate non valide vengono ignorate e rimosse all'avvio.
