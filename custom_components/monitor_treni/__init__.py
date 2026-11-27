@@ -25,22 +25,38 @@ _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.SENSOR]
 
+def _service_date(value):
+    """Accept only real ISO calendar dates, preserving the stored string key."""
+    from datetime import date
+
+    if not isinstance(value, str):
+        raise vol.Invalid("Expected a date in YYYY-MM-DD format")
+    value = value.strip()
+    try:
+        parsed = date.fromisoformat(value)
+    except ValueError as exc:
+        raise vol.Invalid("Expected a valid date in YYYY-MM-DD format") from exc
+    if parsed.isoformat() != value:
+        raise vol.Invalid("Expected a date in YYYY-MM-DD format")
+    return value
+
+
 ADD_TRAIN_SCHEMA = vol.Schema(
     {
         vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
-        vol.Optional("date"): cv.string,
+        vol.Optional("date"): _service_date,
     }
 )
 REMOVE_TRAIN_SCHEMA = vol.Schema(
     {
         vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
-        vol.Required("date"): cv.string,
+        vol.Required("date"): _service_date,
     }
 )
 NOTIFY_ON_DELAY_SCHEMA = vol.Schema(
     {
         vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
-        vol.Optional("date"): cv.string,
+        vol.Optional("date"): _service_date,
         vol.Required("threshold_minutes"): vol.All(vol.Coerce(int), vol.Range(min=1)),
         vol.Required("notify_target"): cv.string,
         vol.Optional("message"): cv.string,
@@ -49,7 +65,7 @@ NOTIFY_ON_DELAY_SCHEMA = vol.Schema(
 CANCEL_DELAY_WATCH_SCHEMA = vol.Schema(
     {
         vol.Required("train_number"): vol.All(cv.string, str.strip, vol.Match(r"^[0-9]+$")),
-        vol.Required("date"): cv.string,
+        vol.Required("date"): _service_date,
     }
 )
 
@@ -92,8 +108,10 @@ async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     store = Store(hass, STORAGE_VERSION, f"{STORAGE_KEY}_{entry.entry_id}")
     try:
         await store.async_remove()
-    except Exception:  # noqa: BLE001 - il file potrebbe già non esistere
-        pass
+    except FileNotFoundError:
+        _LOGGER.debug("Archivio Monitor Treni già rimosso")
+    except OSError:
+        _LOGGER.exception("Impossibile rimuovere l'archivio Monitor Treni")
 
 
 async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry):
@@ -169,8 +187,8 @@ async def _async_register_lovelace_resource(hass: HomeAssistant, url: str) -> bo
 
     try:
         await resources.async_load()
-    except Exception:  # noqa: BLE001 - può essere già caricata, non è un problema
-        pass
+    except Exception:  # noqa: BLE001 - la collezione può essere già caricata
+        _LOGGER.debug("Caricamento risorse Lovelace non completato", exc_info=True)
 
     if not hasattr(resources, "async_create_item"):
         # Modalità YAML: la collezione è read-only.
@@ -249,4 +267,4 @@ async def _async_register_frontend(hass: HomeAssistant) -> None:
                 notification_id=f"{DOMAIN}_frontend_registration_failed",
             )
         except Exception:  # noqa: BLE001
-            pass
+            _LOGGER.exception("Impossibile inviare la notifica di registrazione card")
