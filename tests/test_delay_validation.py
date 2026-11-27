@@ -14,10 +14,15 @@ class DelayTests(unittest.TestCase):
         node = next(n for n in source.body if isinstance(n, ast.Assign) and
                     any(isinstance(t, ast.Name) and t.id == "NOTIFY_ON_DELAY_SCHEMA" for t in n.targets))
         namespace = {"vol": vol, "cv": SimpleNamespace(string=str)}
-        exec(compile(ast.Module(body=[node], type_ignores=[]), "<schema>", "exec"), namespace)
+        validator = next(n for n in source.body if isinstance(n, ast.FunctionDef) and n.name == "_service_date")
+        exec(compile(ast.Module(body=[validator, node], type_ignores=[]), "<schema>", "exec"), namespace)
         schema = namespace["NOTIFY_ON_DELAY_SCHEMA"]
         data = {"train_number": "123", "notify_target": "notify.test", "threshold_minutes": 1}
         self.assertEqual(schema(data)["threshold_minutes"], 1)
+        self.assertEqual(schema(dict(data, date="2028-02-29"))["date"], "2028-02-29")
+        for invalid in ("2026-02-29", "2026-13-01", "20261127", "2026-W48-5", ""):
+            with self.assertRaises(vol.Invalid):
+                schema(dict(data, date=invalid))
         for threshold in (0, -1):
             with self.assertRaises(vol.Invalid):
                 schema(dict(data, threshold_minutes=threshold))
